@@ -1,31 +1,50 @@
-# Prediksi Harga Saham GOTO Menggunakan LSTM
+![image](https://github.com/user-attachments/assets/da72f837-2a95-498d-a5e9-8cb5ee899d04)# Laporan Proyek Machine Learning Terapan 1 - Prediksi Harga Saham GOTO Menggunakan LSTM
 
-## 1. Business Understanding
+## Domain Proyek
+Harga saham merupakan indikator penting dalam pasar keuangan yang mencerminkan performa perusahaan dan dinamika pasar. PT GoTo Gojek Tokopedia Tbk (GOTO), sebuah perusahaan teknologi terkemuka di Indonesia, memiliki saham yang diperdagangkan di Bursa Efek Indonesia (BEI) dengan kode **GOTO.JK**. Data historis saham GOTO dapat diakses melalui [Yahoo Finance](https://finance.yahoo.com/quote/GOTO.JK/history/). Prediksi harga saham yang akurat sangat penting bagi investor, trader, dan institusi keuangan untuk mendukung pengambilan keputusan investasi, manajemen risiko, dan strategi perdagangan. Pendekatan tradisional seperti analisis teknikal dan fundamental sering kali tidak mampu menangkap pola kompleks dan non-linear dalam data harga saham, yang dipengaruhi oleh faktor seperti sentimen pasar, kebijakan ekonomi, dan peristiwa global. Oleh karena itu, pendekatan berbasis *machine learning*, khususnya **Long Short-Term Memory (LSTM)**, menjadi relevan karena kemampuannya dalam menangani data deret waktu dengan ketergantungan jangka panjang. Proyek ini bertujuan untuk membangun model prediktif menggunakan LSTM untuk memprediksi harga penutupan saham **GOTO.JK** berdasarkan data historis dari Yahoo Finance. Dengan memanfaatkan kemampuan LSTM untuk menangkap pola temporal, proyek ini diharapkan dapat memberikan wawasan prediktif yang mendukung investor dalam membuat keputusan yang lebih tepat waktu dan *informed*, baik untuk strategi jangka pendek maupun menengah.
 
-### Problem Statement
-- Bagaimana memprediksi harga penutupan saham GOTO untuk beberapa hari ke depan menggunakan data historis?
-- Apakah model LSTM mampu menangkap pola temporal dari data harga dan volume saham?
-- Bagaimana performa model prediksi dibandingkan dengan baseline?
+## Business Understanding
+### Problem Statements
+Berdasarkan latar belakang di atas, permasalahan yang akan dibahas dalam proyek ini adalah:
+1. Seberapa akurat model LSTM dalam memprediksi harga penutupan saham **GOTO.JK** untuk 1 hari dan 5 hari ke depan berdasarkan data historis?
+2. Bagaimana performa model LSTM dibandingkan dengan metrik evaluasi seperti **Root Mean Squared Error (RMSE)** dan **Mean Absolute Error (MAE)**?
+3. Apakah model LSTM dapat digunakan untuk mendukung keputusan investasi jangka pendek atau menengah?
 
 ### Goals
-- Membangun model prediksi harga saham menggunakan algoritma LSTM.
-- Mengidentifikasi pola pergerakan harga saham berdasarkan data historis.
-- Mengevaluasi performa model menggunakan metrik error seperti RMSE dan MAE.
+Berdasarkan *problem statements*, tujuan proyek ini adalah:
+1. Membangun model LSTM yang akurat untuk memprediksi harga penutupan saham **GOTO.JK**.
+2. Mengevaluasi performa model menggunakan metrik **RMSE** dan **MAE**.
+3. Menyediakan wawasan prediktif yang dapat mendukung keputusan investasi.
 
----
+### Solution Statement
+1. Melakukan **Exploratory Data Analysis (EDA)** untuk mengidentifikasi pola, tren, dan korelasi dalam data harga saham **GOTO.JK**.
+2. Menggunakan model **LSTM** untuk memprediksi harga penutupan saham berdasarkan data historis.
+3. Menggunakan metrik evaluasi seperti **RMSE** dan **MAE** untuk menilai performa model.
+4. Melakukan normalisasi data menggunakan **StandardScaler** untuk memastikan data sesuai dengan kebutuhan model LSTM.
+5. Mengoptimalkan model dengan **EarlyStopping** dan **ReduceLROnPlateau** untuk meningkatkan akurasi prediksi.
 
-## 2. Data Understanding
 
-### Variabel pada Dataset:
-- **Tanggal**: Tanggal perdagangan (format: DD/MM/YYYY).
-- **Terakhir**: Harga penutupan saham pada hari tersebut.
-- **Pembukaan**: Harga pembukaan saham pada hari tersebut.
-- **Tertinggi**: Harga tertinggi saham pada hari tersebut.
-- **Terendah**: Harga terendah saham pada hari tersebut.
-- **Vol.**: Volume perdagangan saham (dalam ribuan).
-- **Perubahan%**: Persentase perubahan harga penutupan dibandingkan hari sebelumnya.
+## Data Understanding
 
----
+### Deskripsi Dataset
+Dataset yang digunakan diambil dari [Yahoo Finance](https://finance.yahoo.com/quote/GOTO.JK/history/) menggunakan library `yfinance` dengan kode saham **GOTO.JK**. Dataset ini mencakup periode perdagangan harian dari **11 April 2022 hingga 25 Mei 2025**, terdiri dari **1124 baris** dan **7 kolom**: **Tanggal**, **Terakhir**, **Pembukaan**, **Tertinggi**, **Terendah**, **Volume**, dan **Perubahan%**. Dataset ini bersifat deret waktu dan berisi data numerik tanpa nilai kategorikal.
+
+### Tipe Data
+| Kolom         | Tipe Data Awal | Tipe Data Setelah Pemrosesan |
+|---------------|----------------|------------------------------|
+| Tanggal       | String         | Datetime                     |
+| Terakhir      | String         | Float                        |
+| Pembukaan     | String         | Float                        |
+| Tertinggi     | String         | Float                        |
+| Terendah      | String         | Float                        |
+| Vol.          | String         | Float                        |
+| Perubahan%    | String         | Float (dihapus setelahnya)   |
+
+### Bentuk Data
+
+- **Jumlah Baris**: 1124
+- **Jumlah Kolom**: 7
+- **Periode**: 11 April 2022 – 25 Mei 2025
 
 ## 3. Data Preparation
 
@@ -36,61 +55,3 @@
 - Fungsi `split_target` digunakan untuk membuat urutan data. Dengan `look_back = 1`, model belajar menggunakan harga 1 hari sebelumnya untuk memprediksi harga hari berikutnya.
 - Data diubah menjadi format 3D: `[jumlah sampel, langkah waktu, jumlah fitur]` sesuai kebutuhan arsitektur LSTM.
 
----
-
-## 4. Modeling
-
-### 4.1 Model LSTM (Prediksi 1 Hari)
-
-- Arsitektur:
-  - 2 lapisan **LSTM** (masing-masing 50 unit).
-  - Lapisan **Dropout (rate = 0.2)** untuk mencegah overfitting.
-  - 2 lapisan **Dense**:
-    - Dense(25)
-    - Dense(1) sebagai output harga penutupan.
-- Optimizer: **Adam**
-- Loss function: **Mean Squared Error (MSE)**
-- Epoch: Maksimal 50
-- Batch size: 32
-- Callback:
-  - **EarlyStopping**: berhenti jika validasi error stagnan selama 10 epoch.
-  - **ReduceLROnPlateau**: menurunkan learning rate jika error tidak membaik.
-
----
-
-## 5. Evaluation (Prediksi 1 Hari)
-
-- Hasil prediksi dikembalikan ke skala asli menggunakan `scaler.inverse_transform`.
-- Metrik evaluasi:
-  - **RMSE**: 151.20 → rata-rata error sekitar 151 poin harga.
-  - **MAE**: 98.02 → rata-rata selisih absolut sekitar 98 poin.
-- Visualisasi menunjukkan bahwa model mengikuti tren harga asli dengan cukup baik.
-
----
-
-## 6. Multi-step Forecasting (Prediksi 5 Hari)
-
-### 6.1 Strategi
-
-- Menggunakan fungsi `create_sequences` untuk membentuk:
-  - Input (`X`): 30 hari terakhir (`seq_length = 30`)
-  - Output (`y`): 5 hari ke depan (`pred_length = 5`)
-- Data dinormalisasi dan diformat dalam bentuk 3D.
-
-### 6.2 Hasil Evaluasi
-
-- Metrik untuk masing-masing hari dari hari ke-1 hingga ke-5:
-  - **Overall RMSE**: 300.17
-  - **Overall MAE**: 219.98
-- Hasil ini menunjukkan bahwa:
-  - Model memiliki performa yang menurun dalam prediksi 5 hari ke depan.
-  - Prediksi jangka pendek (1 hari) lebih akurat dibandingkan prediksi jangka menengah (5 hari).
-
----
-
-## 7. Kesimpulan
-
-- Model LSTM mampu mempelajari pola temporal dari data harga saham GOTO dan menunjukkan performa cukup baik untuk prediksi 1 hari ke depan.
-- Dengan RMSE sebesar 151.20 dan MAE sebesar 98.02, model menunjukkan hasil yang akurat pada jangka pendek.
-- Namun, akurasi menurun ketika memprediksi 5 hari ke depan (RMSE: 300.17, MAE: 219.98), menunjukkan bahwa kompleksitas prediksi meningkat seiring bertambahnya horizon waktu.
-- LSTM cocok untuk prediksi harga saham berbasis data historis, terutama untuk jangka pendek. Untuk prediksi jangka panjang, diperlukan pendekatan lanjutan seperti stacked LSTM, attention mechanism, atau model hybrid.
