@@ -263,6 +263,6 @@ Saran Perbaikan
 - Evaluasi dengan metrik RMSE dan MAE memberikan gambaran seberapa baik model bekerja dan menjadi dasar untuk perbaikan selanjutnya (misalnya penambahan fitur, tuning parameter, atau pemilihan arsitektur lanjutan).
 
 ## Referensi
-- Brownlee, J. (2020). *Deep Learning for Time Series Forecasting*. Machine Learning Mastery. Diakses pada 25 Mei 2025 dari [https://machinelearningmastery.com/deep-learning-for-time-series-forecasting/](https://machinelearningmastery.com/deep-learning-for-time-series-forecasting/)
+- Lim, B., & Zohren, S. (2020). *Time Series Forecasting With Deep Learning: A Survey*. arXiv preprint arXiv:2004.13408. Diakses pada 28 Mei 2025 dari [https://arxiv.org/abs/2004.13408](https://arxiv.org/abs/2004.13408).  
 - Dicoding. (2024). *Machine Learning Terapan*. Diakses pada 25 Mei 2025 dari [https://www.dicoding.com/academies/319-machine-learning-terapan](https://www.dicoding.com/academies/319-machine-learning-terapan)
 - Yahoo Finance. (2025). *GOTO.JK Historical Data*. Diakses pada 25 Mei 2025 dari [https://finance.yahoo.com/quote/GOTO.JK/history/](https://finance.yahoo.com/quote/GOTO.JK/history/)
