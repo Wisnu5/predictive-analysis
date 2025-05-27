@@ -28,9 +28,8 @@ Berdasarkan *problem statements*, tujuan proyek ini adalah:
 ### Deskripsi Dataset
 Dataset yang digunakan diambil dari [Yahoo Finance](https://finance.yahoo.com/quote/GOTO.JK/history/) menggunakan library `yfinance` dengan kode saham **GOTO.JK**. Dataset ini mencakup periode perdagangan harian dari **11 April 2022 hingga 25 Mei 2025**, terdiri dari **1124 baris** dan **7 kolom**: **Tanggal**, **Terakhir**, **Pembukaan**, **Tertinggi**, **Terendah**, **Volume**, dan **Perubahan%**. Dataset ini bersifat deret waktu dan berisi data numerik tanpa nilai kategorikal.
 
-![image](https://github.com/user-attachments/assets/f863ea1b-11ca-4c36-b100-304ea941de88)
-
 ### Tipe Data
+![image](https://github.com/user-attachments/assets/f863ea1b-11ca-4c36-b100-304ea941de88)
 | Kolom         | Tipe Data Awal | Tipe Data Setelah Pemrosesan |
 |---------------|----------------|------------------------------|
 | Tanggal       | String         | Datetime64                   |
@@ -47,9 +46,8 @@ Dataset yang digunakan diambil dari [Yahoo Finance](https://finance.yahoo.com/qu
 - **Jumlah Kolom**: 7
 - **Periode**: 11 April 2022 – 25 Mei 2025
 
-![image](https://github.com/user-attachments/assets/4a133e11-bc9b-4c89-ad32-16dd3e04a812)
-
 ### Deskripsi Variabel
+![image](https://github.com/user-attachments/assets/4a133e11-bc9b-4c89-ad32-16dd3e04a812)
 | Variabel      | Keterangan                                                                 |
 |---------------|----------------------------------------------------------------------------|
 | Tanggal       | Tanggal perdagangan (format: DD/MM/YYYY).                                  |
@@ -60,12 +58,20 @@ Dataset yang digunakan diambil dari [Yahoo Finance](https://finance.yahoo.com/qu
 | Vol.          | Jumlah saham yang diperdagangkan pada hari tersebut (dalam ribuan).        |
 | Perubahan%    | Persentase perubahan harga penutupan dibandingkan hari sebelumnya.         |
 
-![image](https://github.com/user-attachments/assets/fc134934-86db-4a7d-9a38-ad9b897c41c4)
+
 ### Menangani Missing Value dan Duplicate Data
+![image](https://github.com/user-attachments/assets/fc134934-86db-4a7d-9a38-ad9b897c41c4)
 Berdasarkan analisis awal:
 - **Missing Values**: Tidak ada nilai yang hilang pada dataset (dikonfirmasi dengan `data.isnull().sum()`).
 - **Duplicate Data**: Tidak ada data duplikat yang ditemukan (dikonfirmasi dengan `data.duplicated().sum()`).
 - Kolom seperti **Terakhir**, **Pembukaan**, **Tertinggi**, **Terendah**, **Vol.**, dan **Perubahan%** awalnya bertipe string dengan karakter khusus (misalnya, koma untuk desimal atau simbol persen), sehingga memerlukan pembersihan dan konversi ke tipe numerik.
 
+### Visualisasi Data (EDA)
+Visualisasi data dilakukan menggunakan library `matplotlib` untuk melihat tren harga penutupan:
+- **Interpretasi**:
+  - Harga penutupan saham **GOTO** menunjukkan volatilitas tinggi, terutama pada periode awal *listing* (2022) dan beberapa periode fluktuasi signifikan, kemungkinan akibat sentimen pasar teknologi.
+  - Tidak ada *outlier* ekstrem yang terdeteksi dalam data harga.
+- **Multivariate Analysis**:
+  - Korelasi antar variabel numerik (**Open**, **High**, **Low**, **Close**, **Volume**) dianalisis untuk memahami hubungan antar fitur. Harga penutupan (**Terakhir**) memiliki korelasi tinggi dengan **Pembukaan**, **Tertinggi**, dan **Terendah**, tetapi korelasi rendah dengan **Volume**.
 
 
