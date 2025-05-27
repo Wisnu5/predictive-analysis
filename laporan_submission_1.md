@@ -28,16 +28,19 @@ Berdasarkan *problem statements*, tujuan proyek ini adalah:
 ### Deskripsi Dataset
 Dataset yang digunakan diambil dari [Yahoo Finance](https://finance.yahoo.com/quote/GOTO.JK/history/) menggunakan library `yfinance` dengan kode saham **GOTO.JK**. Dataset ini mencakup periode perdagangan harian dari **11 April 2022 hingga 25 Mei 2025**, terdiri dari **1124 baris** dan **7 kolom**: **Tanggal**, **Terakhir**, **Pembukaan**, **Tertinggi**, **Terendah**, **Volume**, dan **Perubahan%**. Dataset ini bersifat deret waktu dan berisi data numerik tanpa nilai kategorikal.
 
+![image](https://github.com/user-attachments/assets/f863ea1b-11ca-4c36-b100-304ea941de88)
+![image](https://github.com/user-attachments/assets/4a133e11-bc9b-4c89-ad32-16dd3e04a812)
+![image](https://github.com/user-attachments/assets/00a3a738-fa3f-4093-a4ce-6ba5dbd0aab9)
 ### Tipe Data
 | Kolom         | Tipe Data Awal | Tipe Data Setelah Pemrosesan |
 |---------------|----------------|------------------------------|
-| Tanggal       | String         | Datetime                     |
-| Terakhir      | String         | Float                        |
-| Pembukaan     | String         | Float                        |
-| Tertinggi     | String         | Float                        |
-| Terendah      | String         | Float                        |
-| Vol.          | String         | Float                        |
-| Perubahan%    | String         | Float (dihapus setelahnya)   |
+| Tanggal       | String         | Datetime64                   |
+| Terakhir      | String         | Int64                        |
+| Pembukaan     | String         | Int64                        |
+| Tertinggi     | String         | Int64                        |
+| Terendah      | String         | Int64                        |
+| Vol.          | String         | Float64                      |
+| Perubahan%    | String         | Float64                      |
 
 ### Bentuk Data
 ![image](https://github.com/user-attachments/assets/da72f837-2a95-498d-a5e9-8cb5ee899d04)
