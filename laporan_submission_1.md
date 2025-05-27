@@ -29,7 +29,6 @@ Berdasarkan *problem statements*, tujuan proyek ini adalah:
 Dataset yang digunakan diambil dari [Yahoo Finance](https://finance.yahoo.com/quote/GOTO.JK/history/) menggunakan library `yfinance` dengan kode saham **GOTO.JK**. Dataset ini mencakup periode perdagangan harian dari **11 April 2022 hingga 25 Mei 2025**, terdiri dari **1124 baris** dan **7 kolom**: **Tanggal**, **Terakhir**, **Pembukaan**, **Tertinggi**, **Terendah**, **Volume**, dan **Perubahan%**. Dataset ini bersifat deret waktu dan berisi data numerik tanpa nilai kategorikal.
 
 ![image](https://github.com/user-attachments/assets/f863ea1b-11ca-4c36-b100-304ea941de88)
-![image](https://github.com/user-attachments/assets/4a133e11-bc9b-4c89-ad32-16dd3e04a812)
 
 ### Tipe Data
 | Kolom         | Tipe Data Awal | Tipe Data Setelah Pemrosesan |
@@ -48,12 +47,25 @@ Dataset yang digunakan diambil dari [Yahoo Finance](https://finance.yahoo.com/qu
 - **Jumlah Kolom**: 7
 - **Periode**: 11 April 2022 – 25 Mei 2025
 
-## 3. Data Preparation
+![image](https://github.com/user-attachments/assets/4a133e11-bc9b-4c89-ad32-16dd3e04a812)
 
-- Kolom **Terakhir** (harga penutupan) dinormalisasi menggunakan `StandardScaler` agar data memiliki rata-rata 0 dan standar deviasi 1.
-- Data dibagi menjadi:
-  - **80% data latih (training)**: untuk melatih model.
-  - **20% data uji (testing)**: untuk menguji performa model.
-- Fungsi `split_target` digunakan untuk membuat urutan data. Dengan `look_back = 1`, model belajar menggunakan harga 1 hari sebelumnya untuk memprediksi harga hari berikutnya.
-- Data diubah menjadi format 3D: `[jumlah sampel, langkah waktu, jumlah fitur]` sesuai kebutuhan arsitektur LSTM.
+### Deskripsi Variabel
+| Variabel      | Keterangan                                                                 |
+|---------------|----------------------------------------------------------------------------|
+| Tanggal       | Tanggal perdagangan (format: DD/MM/YYYY).                                  |
+| Terakhir      | Harga penutupan saham pada hari tersebut (dalam IDR, variabel target).     |
+| Pembukaan     | Harga pembukaan saham pada hari tersebut (dalam IDR).                      |
+| Tertinggi     | Harga tertinggi saham pada hari tersebut (dalam IDR).                      |
+| Terendah      | Harga terendah saham pada hari tersebut (dalam IDR).                       |
+| Vol.          | Jumlah saham yang diperdagangkan pada hari tersebut (dalam ribuan).        |
+| Perubahan%    | Persentase perubahan harga penutupan dibandingkan hari sebelumnya.         |
+
+![image](https://github.com/user-attachments/assets/fc134934-86db-4a7d-9a38-ad9b897c41c4)
+### Menangani Missing Value dan Duplicate Data
+Berdasarkan analisis awal:
+- **Missing Values**: Tidak ada nilai yang hilang pada dataset (dikonfirmasi dengan `data.isnull().sum()`).
+- **Duplicate Data**: Tidak ada data duplikat yang ditemukan (dikonfirmasi dengan `data.duplicated().sum()`).
+- Kolom seperti **Terakhir**, **Pembukaan**, **Tertinggi**, **Terendah**, **Vol.**, dan **Perubahan%** awalnya bertipe string dengan karakter khusus (misalnya, koma untuk desimal atau simbol persen), sehingga memerlukan pembersihan dan konversi ke tipe numerik.
+
+
 
