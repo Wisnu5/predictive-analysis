@@ -94,6 +94,7 @@ Berdasarkan analisis awal:
   - Variasi naik dan turun seimbang.
 
 ![image](https://github.com/user-attachments/assets/6642117d-641f-472b-9a9b-703193032c04)
+
 ### Pembukaan dan Penutupan
 - **Stabilitas Awal (2021)**: Harga stabil di kisaran tinggi.
 - **Krisis 2022**: Penurunan drastis, menandakan dampak besar dari faktor eksternal.
@@ -101,6 +102,7 @@ Berdasarkan analisis awal:
 - **Insight**: Aset ini memiliki volatilitas tinggi, memerlukan strategi investasi yang hati-hati.
 
 ![image](https://github.com/user-attachments/assets/879ad4b3-224b-44cb-8e5f-a61a41f161f1)
+
 ### Vol
 - **Aktivitas Tinggi (Awal 2022)**: Volume mencapai puncak tertinggi.
 - **Penurunan Aktivitas (2022–2023)**: Volume turun drastis dan stabil di kisaran rendah.
@@ -108,6 +110,7 @@ Berdasarkan analisis awal:
 - **Insight**: Volume transaksi berkorelasi dengan aktivitas pasar dan volatilitas harga.
 
 ![image](https://github.com/user-attachments/assets/4fbe1670-b122-46ef-a7be-4fae09bcea3f)
+
 ### Perubahan
 - **Stabilitas Awal (2021)**: Persentase perubahan stabil di kisaran positif.
 - **Krisis 2022**: Penurunan drastis hingga **-40%**, menandakan dampak besar dari faktor eksternal.
@@ -115,6 +118,7 @@ Berdasarkan analisis awal:
 - **Insight**: Aset ini memiliki volatilitas tinggi, memerlukan strategi investasi yang hati-hati.
 
 ![image](https://github.com/user-attachments/assets/c9ff8609-d6b9-45ef-b95f-8dd014e18265)
+
 - **Hubungan Waktu dan Harga**: Ada hubungan negatif kuat antara waktu dan harga.
 - **Volume Transaksi**: Memiliki hubungan negatif menengah dengan harga.
 - **Perubahan Persentase**: Hubungan rendah dengan variabel lainnya.
@@ -125,23 +129,29 @@ Beberapa tahapan persiapan data dilakukan agar data dapat digunakan dalam model 
 
 1. **Konversi Tanggal**: Kolom `'Tanggal'` diubah ke format `datetime` agar dapat diurutkan secara kronologis.
    ![image](https://github.com/user-attachments/assets/b5c9fee9-251b-4015-9b5b-0d0b9971d4ac)
-2. **Pembersihan Data**:
+   
+3. **Pembersihan Data**:
    ![image](https://github.com/user-attachments/assets/55f16599-9f25-4a4d-981b-1634986205d5)
+   
    - Kolom numerik seperti `'Terakhir'`, `'Pembukaan'`, `'Tertinggi'`, `'Terendah'`, dan `'Vol.'` dibersihkan dari karakter khusus (misalnya tanda titik atau koma) dan dikonversi ke tipe numerik (`float`).
-3. **Penghapusan Kolom Tidak Relevan**:
+5. **Penghapusan Kolom Tidak Relevan**:
    ![image](https://github.com/user-attachments/assets/a2bb0b4b-c8a6-425a-bcee-1ece7567785c)
+   
    - Kolom `'Perubahan%'` dihapus karena redundan dan tidak digunakan dalam prediksi langsung.
-4. **Normalisasi Data**:
+7. **Normalisasi Data**:
    ![image](https://github.com/user-attachments/assets/03eeda7d-0198-458a-90a9-be0ef042d314)
+   
    - Kolom `'Terakhir'` dinormalisasi menggunakan **StandardScaler** agar data memiliki rata-rata 0 dan standar deviasi 1.
-5. **Pembentukan Dataset Time Series**:
+9. **Pembentukan Dataset Time Series**:
    ![image](https://github.com/user-attachments/assets/a88af98e-12af-4184-89d2-293ae7b13dd9)
+   
    - Fungsi `split_target()` digunakan untuk membentuk urutan input dan target.
    - Dengan `look_back = 1`, model belajar menggunakan harga 1 hari sebelumnya untuk memprediksi harga hari berikutnya.
-6. **Format Input LSTM**:
+11. **Format Input LSTM**:
    - Data diubah ke format 3D `[samples, time steps, features]` sesuai kebutuhan input model LSTM.
-7. **Split Data**:
+11. **Split Data**:
     ![image](https://github.com/user-attachments/assets/ee3d9bdd-5a3b-41cf-bea2-384eea290b0a)
+
    - **80% data latih**, **20% data uji**.
 ---
 
@@ -156,6 +166,8 @@ Dengan memanfaatkan cell state dan gating mechanism ini, LSTM dapat mempelajari 
 
 ### Model LSTM 
 ![image](https://github.com/user-attachments/assets/6200def0-bc7a-4774-8712-f9b006a4a98e)
+![image](https://github.com/user-attachments/assets/bbf1ace0-f1ec-476d-b53f-975a66309b99)
+
 - **Arsitektur**:
   - LSTM (50 units)
   - Dropout (0.2)
@@ -174,31 +186,6 @@ Dengan memanfaatkan cell state dan gating mechanism ini, LSTM dapat mempelajari 
   - `EarlyStopping(patience=10, restore_best_weights=True)`
   - `ReduceLROnPlateau(factor=0.2, patience=5, min_lr=1e-5)`
 ---
-
-### 4.2 Model LSTM (Prediksi 5 Hari)
-![image](https://github.com/user-attachments/assets/bbf1ace0-f1ec-476d-b53f-975a66309b99)
-- **Strategi**:
-  - Input: 30 hari terakhir (`seq_length = 30`)
-  - Output: 5 hari ke depan (`pred_length = 5`)
-
-- **Arsitektur**:
-  - LSTM (60 units)
-  - Dropout (0.2)
-  - LSTM (60 units)
-  - Dropout (0.2)
-  - Dense (30 units)
-  - Dense (5 units) → Output
-
-- **Parameter**:
-  - Optimizer: `Adam`
-  - Loss Function: `MSE`
-  - Epoch: 50
-  - Batch Size: 32
-
-- **Callback**:
-  - `EarlyStopping(patience=10, restore_best_weights=True)`
-  - `ReduceLROnPlateau(factor=0.2, patience=5, min_lr=1e-5)`
-
 ![image](https://github.com/user-attachments/assets/6bbf2d1f-df0d-4f5f-b496-b397efa84f71)
 Setelah dilatih, model membuat prediksi pada data uji, lalu hasilnya dikembalikan ke skala asli menggunakan scaler.inverse_transform.
 Hasil evaluasi:
@@ -210,7 +197,66 @@ Grafik menunjukkan perbandingan harga saham asli (biru) dan prediksi (jingga) da
 - Secara keseluruhan, prediksi cukup dekat dengan harga asli, sesuai dengan nilai RMSE dan MAE.
 ---
 
-- Membuat urutan input-output (30 hari untuk memprediksi 5 hari berikutnya)
+### Membuat urutan input-output (30 hari untuk memprediksi 5 hari berikutnya)
 - create_sequences: Fungsi untuk membuat urutan data input (X) dan output (y)
 - seq_length: panjang urutan input (berapa hari data sebelumnya yang digunakan)
 - pred_length: panjang urutan prediksi (berapa hari ke depan yang akan diprediksi)
+
+### 4.2 Model LSTM (Prediksi 5 Hari)
+![image](https://github.com/user-attachments/assets/cdacfbe9-3bab-4572-bc8e-393c33cac0ea)
+![image](https://github.com/user-attachments/assets/aceef4ef-37b9-4399-b1b5-2f6653ef3a46)
+![image](https://github.com/user-attachments/assets/e03b43c0-49db-47a1-9514-1ce6f06055cc)
+
+- **Strategi**:
+  - Input: 30 hari terakhir (`seq_length = 30`)
+  - Output: 5 hari ke depan (`pred_length = 5`)
+
+- **Arsitektur**:
+  - LSTM (100 units)
+  - Dropout (0.2)
+  - LSTM (100 units)
+  - Dropout (0.2)
+  - Dense (50 units)
+  - Dense (5 units) → Output
+
+- **Parameter**:
+  - Optimizer: `Adam`
+  - Loss Function: `MSE`
+  - Epoch: 50
+  - Batch Size: 32
+
+- **Callback**:
+  - `EarlyStopping(patience=10, restore_best_weights=True)`
+  - `ReduceLROnPlateau(factor=0.2, patience=5, min_lr=1e-5)`
+---
+
+model cukup baik mengikuti tren tetapi terlambat merespons lonjakan tajam, terutama saat harga naik tajam (des 2024) dan drop mendadak (apr 2025).
+Kemungkinan penyebab eror
+- Kurang banyak fitur: Jika hanya menggunakan harga sebelumnya (lag features), maka model cenderung underfitting terhadap dinamika pasar.
+- Model tidak autoregressive: Jika prediksi dilakukan secara langsung untuk 5 hari ke depan, tanpa memperhatikan ketergantungan antar-hari, maka kesalahan akumulatif bisa besar.
+Saran Perbaikan
+- Tambahkan fitur jangan menggunakan satu fitur saja
+- Kombinasikan prediksi dari beberapa model: misalnya kombinasi ARIMA + LSTM atau XGBoost + LSTM.
+
+## Kesimpulan Proyek Prediksi Harga Saham GOTO
+
+1. Menjawab Problem Statement
+- Prediksi harga saham GOTO untuk beberapa hari ke depan berhasil dilakukan menggunakan data historis harga penutupan.
+- Model LSTM terbukti mampu menangkap pola temporal dari data historis, seperti tren naik dan turun harga dalam jangka pendek.
+- Namun, performa model masih dapat ditingkatkan, terutama dalam menangkap perubahan harga yang tajam (lonjakan dan penurunan ekstrem), yang terlihat dari peningkatan error saat horizon prediksi lebih jauh.
+
+2. Hasil evaluasi menggunakan metrik:
+- RMSE: 300.17
+- MAE: 219.97
+- Ini menunjukkan bahwa model memiliki kemampuan dasar dalam memprediksi arah harga, namun masih terdapat deviasi yang cukup besar dari nilai aktual, terutama untuk horizon lebih panjang.
+- Jika dibandingkan dengan baseline seperti naive forecast (misalnya: harga hari ini = harga kemarin), model LSTM menunjukkan peningkatan akurasi, khususnya dalam mengenali pola jangka pendek.
+
+3. Goals Tercapai
+- Model LSTM berhasil dibangun dan diimplementasikan untuk memprediksi harga saham.
+- Pola pergerakan harga saham seperti tren dan siklus jangka pendek berhasil ditangkap oleh model.
+- Evaluasi dengan metrik RMSE dan MAE memberikan gambaran seberapa baik model bekerja dan menjadi dasar untuk perbaikan selanjutnya (misalnya penambahan fitur, tuning parameter, atau pemilihan arsitektur lanjutan).
+
+## Referensi
+- Brownlee, J. (2020). *Deep Learning for Time Series Forecasting*. Machine Learning Mastery. Diakses pada 25 Mei 2025 dari [https://machinelearningmastery.com/deep-learning-for-time-series-forecasting/](https://machinelearningmastery.com/deep-learning-for-time-series-forecasting/)
+- Dicoding. (2024). *Machine Learning Terapan*. Diakses pada 25 Mei 2025 dari [https://www.dicoding.com/academies/319-machine-learning-terapan](https://www.dicoding.com/academies/319-machine-learning-terapan)
+- Yahoo Finance. (2025). *GOTO.JK Historical Data*. Diakses pada 25 Mei 2025 dari [https://finance.yahoo.com/quote/GOTO.JK/history/](https://finance.yahoo.com/quote/GOTO.JK/history/)
