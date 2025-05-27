@@ -31,6 +31,7 @@ Dataset yang digunakan diambil dari [Yahoo Finance](https://finance.yahoo.com/qu
 ![image](https://github.com/user-attachments/assets/f863ea1b-11ca-4c36-b100-304ea941de88)
 ![image](https://github.com/user-attachments/assets/4a133e11-bc9b-4c89-ad32-16dd3e04a812)
 ![image](https://github.com/user-attachments/assets/00a3a738-fa3f-4093-a4ce-6ba5dbd0aab9)
+
 ### Tipe Data
 | Kolom         | Tipe Data Awal | Tipe Data Setelah Pemrosesan |
 |---------------|----------------|------------------------------|
