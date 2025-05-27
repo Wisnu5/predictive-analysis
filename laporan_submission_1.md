@@ -120,5 +120,97 @@ Berdasarkan analisis awal:
 - **Perubahan Persentase**: Hubungan rendah dengan variabel lainnya.
 - **Model Prediksi**: Fokus pada variabel yang memiliki korelasi tinggi dengan target prediksi.
 
+## Data Preparation
+Beberapa tahapan persiapan data dilakukan agar data dapat digunakan dalam model LSTM:
 
+1. **Konversi Tanggal**: Kolom `'Tanggal'` diubah ke format `datetime` agar dapat diurutkan secara kronologis.
+   ![image](https://github.com/user-attachments/assets/b5c9fee9-251b-4015-9b5b-0d0b9971d4ac)
+2. **Pembersihan Data**:
+   ![image](https://github.com/user-attachments/assets/55f16599-9f25-4a4d-981b-1634986205d5)
+   - Kolom numerik seperti `'Terakhir'`, `'Pembukaan'`, `'Tertinggi'`, `'Terendah'`, dan `'Vol.'` dibersihkan dari karakter khusus (misalnya tanda titik atau koma) dan dikonversi ke tipe numerik (`float`).
+3. **Penghapusan Kolom Tidak Relevan**:
+   ![image](https://github.com/user-attachments/assets/a2bb0b4b-c8a6-425a-bcee-1ece7567785c)
+   - Kolom `'Perubahan%'` dihapus karena redundan dan tidak digunakan dalam prediksi langsung.
+4. **Normalisasi Data**:
+   ![image](https://github.com/user-attachments/assets/03eeda7d-0198-458a-90a9-be0ef042d314)
+   - Kolom `'Terakhir'` dinormalisasi menggunakan **StandardScaler** agar data memiliki rata-rata 0 dan standar deviasi 1.
+5. **Pembentukan Dataset Time Series**:
+   ![image](https://github.com/user-attachments/assets/a88af98e-12af-4184-89d2-293ae7b13dd9)
+   - Fungsi `split_target()` digunakan untuk membentuk urutan input dan target.
+   - Dengan `look_back = 1`, model belajar menggunakan harga 1 hari sebelumnya untuk memprediksi harga hari berikutnya.
+6. **Format Input LSTM**:
+   - Data diubah ke format 3D `[samples, time steps, features]` sesuai kebutuhan input model LSTM.
+7. **Split Data**:
+    ![image](https://github.com/user-attachments/assets/ee3d9bdd-5a3b-41cf-bea2-384eea290b0a)
+   - **80% data latih**, **20% data uji**.
+---
 
+## 4. Modeling
+### Cara Kerja LSTM
+LSTM (Long Short-Term Memory) adalah varian dari Recurrent Neural Network (RNN) yang dirancang untuk mengatasi masalah *long-term dependency*. LSTM memiliki tiga jenis gerbang utama:
+- **Forget Gate**: Menentukan informasi mana yang perlu dilupakan.
+- **Input Gate**: Menentukan informasi mana yang akan disimpan dalam memori.
+- **Output Gate**: Menentukan informasi apa yang akan dikeluarkan.
+Dengan memanfaatkan cell state dan gating mechanism ini, LSTM dapat mempelajari pola jangka panjang dalam data sekuensial seperti harga saham.
+---
+
+### Model LSTM 
+![image](https://github.com/user-attachments/assets/6200def0-bc7a-4774-8712-f9b006a4a98e)
+- **Arsitektur**:
+  - LSTM (50 units)
+  - Dropout (0.2)
+  - LSTM (50 units)
+  - Dropout (0.2)
+  - Dense (25 units)
+  - Dense (1 unit) → Output
+
+- **Parameter**:
+  - Optimizer: `Adam`
+  - Loss Function: `Mean Squared Error (MSE)`
+  - Epoch: Maksimal 50
+  - Batch Size: 32
+
+- **Callback**:
+  - `EarlyStopping(patience=10, restore_best_weights=True)`
+  - `ReduceLROnPlateau(factor=0.2, patience=5, min_lr=1e-5)`
+---
+
+### 4.2 Model LSTM (Prediksi 5 Hari)
+![image](https://github.com/user-attachments/assets/bbf1ace0-f1ec-476d-b53f-975a66309b99)
+- **Strategi**:
+  - Input: 30 hari terakhir (`seq_length = 30`)
+  - Output: 5 hari ke depan (`pred_length = 5`)
+
+- **Arsitektur**:
+  - LSTM (60 units)
+  - Dropout (0.2)
+  - LSTM (60 units)
+  - Dropout (0.2)
+  - Dense (30 units)
+  - Dense (5 units) → Output
+
+- **Parameter**:
+  - Optimizer: `Adam`
+  - Loss Function: `MSE`
+  - Epoch: 50
+  - Batch Size: 32
+
+- **Callback**:
+  - `EarlyStopping(patience=10, restore_best_weights=True)`
+  - `ReduceLROnPlateau(factor=0.2, patience=5, min_lr=1e-5)`
+
+![image](https://github.com/user-attachments/assets/6bbf2d1f-df0d-4f5f-b496-b397efa84f71)
+Setelah dilatih, model membuat prediksi pada data uji, lalu hasilnya dikembalikan ke skala asli menggunakan scaler.inverse_transform.
+Hasil evaluasi:
+- RMSE (Root Mean Squared Error): 151.20 → rata-rata error prediksi sekitar 151 unit dalam skala harga asli.
+- MAE (Mean Absolute Error): 98.02 → rata-rata selisih absolut antara harga asli dan prediksi adalah 98 unit.
+
+Grafik menunjukkan perbandingan harga saham asli (biru) dan prediksi (jingga) dari Juli 2024 hingga Juni 2025:
+- Prediksi mengikuti tren harga asli dengan cukup baik.
+- Secara keseluruhan, prediksi cukup dekat dengan harga asli, sesuai dengan nilai RMSE dan MAE.
+---
+
+- Membuat urutan input-output (30 hari untuk memprediksi 5 hari berikutnya)
+- create_sequences: Fungsi untuk membuat urutan data input (X) dan output (y)
+- seq_length: panjang urutan input (berapa hari data sebelumnya yang digunakan)
+- pred_length: panjang urutan prediksi (berapa hari ke depan yang akan diprediksi)
