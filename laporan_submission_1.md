@@ -48,6 +48,7 @@ Dataset yang digunakan diambil dari [Yahoo Finance](https://finance.yahoo.com/qu
 
 ### Deskripsi Variabel
 ![image](https://github.com/user-attachments/assets/4a133e11-bc9b-4c89-ad32-16dd3e04a812)
+
 | Variabel      | Keterangan                                                                 |
 |---------------|----------------------------------------------------------------------------|
 | Tanggal       | Tanggal perdagangan (format: DD/MM/YYYY).                                  |
@@ -61,6 +62,7 @@ Dataset yang digunakan diambil dari [Yahoo Finance](https://finance.yahoo.com/qu
 
 ### Menangani Missing Value dan Duplicate Data
 ![image](https://github.com/user-attachments/assets/fc134934-86db-4a7d-9a38-ad9b897c41c4)
+
 Berdasarkan analisis awal:
 - **Missing Values**: Tidak ada nilai yang hilang pada dataset (dikonfirmasi dengan `data.isnull().sum()`).
 - **Duplicate Data**: Tidak ada data duplikat yang ditemukan (dikonfirmasi dengan `data.duplicated().sum()`).
