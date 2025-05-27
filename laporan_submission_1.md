@@ -128,29 +128,35 @@ Berdasarkan analisis awal:
 Beberapa tahapan persiapan data dilakukan agar data dapat digunakan dalam model LSTM:
 
 1. **Konversi Tanggal**: Kolom `'Tanggal'` diubah ke format `datetime` agar dapat diurutkan secara kronologis.
+   
    ![image](https://github.com/user-attachments/assets/b5c9fee9-251b-4015-9b5b-0d0b9971d4ac)
    
-3. **Pembersihan Data**:
+2. **Pembersihan Data**:
+   
    ![image](https://github.com/user-attachments/assets/55f16599-9f25-4a4d-981b-1634986205d5)
    
    - Kolom numerik seperti `'Terakhir'`, `'Pembukaan'`, `'Tertinggi'`, `'Terendah'`, dan `'Vol.'` dibersihkan dari karakter khusus (misalnya tanda titik atau koma) dan dikonversi ke tipe numerik (`float`).
-5. **Penghapusan Kolom Tidak Relevan**:
+3. **Penghapusan Kolom Tidak Relevan**:
+   
    ![image](https://github.com/user-attachments/assets/a2bb0b4b-c8a6-425a-bcee-1ece7567785c)
    
    - Kolom `'Perubahan%'` dihapus karena redundan dan tidak digunakan dalam prediksi langsung.
-7. **Normalisasi Data**:
+4. **Normalisasi Data**:
+   
    ![image](https://github.com/user-attachments/assets/03eeda7d-0198-458a-90a9-be0ef042d314)
    
    - Kolom `'Terakhir'` dinormalisasi menggunakan **StandardScaler** agar data memiliki rata-rata 0 dan standar deviasi 1.
-9. **Pembentukan Dataset Time Series**:
+5. **Pembentukan Dataset Time Series**:
+    
    ![image](https://github.com/user-attachments/assets/a88af98e-12af-4184-89d2-293ae7b13dd9)
    
    - Fungsi `split_target()` digunakan untuk membentuk urutan input dan target.
    - Dengan `look_back = 1`, model belajar menggunakan harga 1 hari sebelumnya untuk memprediksi harga hari berikutnya.
-11. **Format Input LSTM**:
+6. **Format Input LSTM**:
    - Data diubah ke format 3D `[samples, time steps, features]` sesuai kebutuhan input model LSTM.
-11. **Split Data**:
-    ![image](https://github.com/user-attachments/assets/ee3d9bdd-5a3b-41cf-bea2-384eea290b0a)
+7. **Split Data**:
+
+   ![image](https://github.com/user-attachments/assets/ee3d9bdd-5a3b-41cf-bea2-384eea290b0a)
 
    - **80% data latih**, **20% data uji**.
 ---
