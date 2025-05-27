@@ -69,11 +69,56 @@ Berdasarkan analisis awal:
 - Kolom seperti **Terakhir**, **Pembukaan**, **Tertinggi**, **Terendah**, **Vol.**, dan **Perubahan%** awalnya bertipe string dengan karakter khusus (misalnya, koma untuk desimal atau simbol persen), sehingga memerlukan pembersihan dan konversi ke tipe numerik.
 
 ### Visualisasi Data (EDA)
-Visualisasi data dilakukan menggunakan library `matplotlib` untuk melihat tren harga penutupan:
-- **Interpretasi**:
-  - Harga penutupan saham **GOTO** menunjukkan volatilitas tinggi, terutama pada periode awal *listing* (2022) dan beberapa periode fluktuasi signifikan, kemungkinan akibat sentimen pasar teknologi.
-  - Tidak ada *outlier* ekstrem yang terdeteksi dalam data harga.
-- **Multivariate Analysis**:
-  - Korelasi antar variabel numerik (**Open**, **High**, **Low**, **Close**, **Volume**) dianalisis untuk memahami hubungan antar fitur. Harga penutupan (**Terakhir**) memiliki korelasi tinggi dengan **Pembukaan**, **Tertinggi**, dan **Terendah**, tetapi korelasi rendah dengan **Volume**.
+![image](https://github.com/user-attachments/assets/694548a3-c94d-415d-b566-2a22f432f9f4)
+# Insight Distribusi Data
+## 1. Harga (Terakhir, Pembukaan, Tertinggi, Terendah)
+- **Modus**: Sekitar `2500–3000`
+- **Bentuk distribusi**: *Right-skewed*
+- **Insight**:
+  - Mayoritas harga berada di kisaran rendah.
+  - Terdapat beberapa outlier dengan nilai sangat tinggi.
+  - Menunjukkan stabilitas dengan sesekali fluktuasi ekstrem.
+
+## 2. Volume Transaksi ("Vol.")
+- **Modus**: Sekitar `0.0–0.1`
+- **Bentuk distribusi**: *Left-skewed*
+- **Insight**:
+  - Sebagian besar volume transaksi kecil.
+  - Ada beberapa kasus dengan volume sangat besar (outlier).
+
+## 3. Perubahan Persentase ("Perubahan%")
+- **Bentuk distribusi**: Simetris / mendekati normal
+- **Pusat distribusi**: Di sekitar `0%`
+- **Insight**:
+  - Pergerakan harga cenderung stabil.
+  - Variasi naik dan turun seimbang.
+
+![image](https://github.com/user-attachments/assets/6642117d-641f-472b-9a9b-703193032c04)
+### Pembukaan dan Penutupan
+- **Stabilitas Awal (2021)**: Harga stabil di kisaran tinggi.
+- **Krisis 2022**: Penurunan drastis, menandakan dampak besar dari faktor eksternal.
+- **Pemulihan Lambat (2023–2025)**: Harga pulih secara bertahap, tetapi belum mencapai level sebelum krisis.
+- **Insight**: Aset ini memiliki volatilitas tinggi, memerlukan strategi investasi yang hati-hati.
+
+![image](https://github.com/user-attachments/assets/879ad4b3-224b-44cb-8e5f-a61a41f161f1)
+### Vol
+- **Aktivitas Tinggi (Awal 2022)**: Volume mencapai puncak tertinggi.
+- **Penurunan Aktivitas (2022–2023)**: Volume turun drastis dan stabil di kisaran rendah.
+- **Pemulihan Aktivitas (2024–2025)**: Volume meningkat kembali, meskipun belum mencapai level tertinggi.
+- **Insight**: Volume transaksi berkorelasi dengan aktivitas pasar dan volatilitas harga.
+
+![image](https://github.com/user-attachments/assets/4fbe1670-b122-46ef-a7be-4fae09bcea3f)
+### Perubahan
+- **Stabilitas Awal (2021)**: Persentase perubahan stabil di kisaran positif.
+- **Krisis 2022**: Penurunan drastis hingga **-40%**, menandakan dampak besar dari faktor eksternal.
+- **Pemulihan Lambat (2022–2025)**: Persentase perubahan pulih secara bertahap, meskipun belum mencapai level tertinggi.
+- **Insight**: Aset ini memiliki volatilitas tinggi, memerlukan strategi investasi yang hati-hati.
+
+![image](https://github.com/user-attachments/assets/c9ff8609-d6b9-45ef-b95f-8dd014e18265)
+- **Hubungan Waktu dan Harga**: Ada hubungan negatif kuat antara waktu dan harga.
+- **Volume Transaksi**: Memiliki hubungan negatif menengah dengan harga.
+- **Perubahan Persentase**: Hubungan rendah dengan variabel lainnya.
+- **Model Prediksi**: Fokus pada variabel yang memiliki korelasi tinggi dengan target prediksi.
+
 
 
