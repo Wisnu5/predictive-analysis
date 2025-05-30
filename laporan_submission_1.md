@@ -1,23 +1,23 @@
 # Laporan Proyek Machine Learning Terapan 1 - Wisnu Al Hussaeni
 
 ## Domain Proyek
-Harga saham merupakan indikator penting dalam pasar keuangan yang mencerminkan performa perusahaan dan dinamika pasar. PT GoTo Gojek Tokopedia Tbk (GOTO), sebuah perusahaan teknologi terkemuka di Indonesia, memiliki saham yang diperdagangkan di Bursa Efek Indonesia (BEI) dengan kode **GOTO.JK**. Data historis saham GOTO dapat diakses melalui [Yahoo Finance](https://finance.yahoo.com/quote/GOTO.JK/history/). Prediksi harga saham yang akurat sangat penting bagi investor, trader, dan institusi keuangan untuk mendukung pengambilan keputusan investasi, manajemen risiko, dan strategi perdagangan. Pendekatan tradisional seperti analisis teknikal dan fundamental sering kali tidak mampu menangkap pola kompleks dan non-linear dalam data harga saham, yang dipengaruhi oleh faktor seperti sentimen pasar, kebijakan ekonomi, dan peristiwa global. Oleh karena itu, pendekatan berbasis *machine learning*, khususnya **Long Short-Term Memory (LSTM)**, menjadi relevan karena kemampuannya dalam menangani data deret waktu dengan ketergantungan jangka panjang. Proyek ini bertujuan untuk membangun model prediktif menggunakan LSTM untuk memprediksi harga penutupan saham **GOTO.JK** berdasarkan data historis dari Yahoo Finance. Dengan memanfaatkan kemampuan LSTM untuk menangkap pola temporal, proyek ini diharapkan dapat memberikan wawasan prediktif yang mendukung investor dalam membuat keputusan yang lebih tepat waktu dan *informed*, baik untuk strategi jangka pendek maupun menengah.
+Harga saham merupakan indikator penting dalam pasar keuangan yang mencerminkan performa perusahaan dan dinamika pasar. PT GoTo Gojek Tokopedia (GOTO), sebuah perusahaan teknologi terkemuka di Indonesia. Data historis saham GOTO dapat diakses melalui [investing.com](https://id.investing.com/equities/goto-gojek-tokopedia-pt-historical-data). Prediksi harga saham yang akurat sangat penting bagi investor, trader, dan institusi keuangan untuk mendukung pengambilan keputusan investasi, manajemen risiko, dan strategi perdagangan. Pendekatan tradisional seperti analisis teknikal dan fundamental sering kali tidak mampu menangkap pola kompleks dan non-linear dalam data harga saham, yang dipengaruhi oleh faktor seperti sentimen pasar, kebijakan ekonomi, dan peristiwa global. Oleh karena itu, pendekatan berbasis *machine learning*, khususnya **Long Short-Term Memory (LSTM)**, menjadi relevan karena kemampuannya dalam menangani data deret waktu dengan ketergantungan jangka panjang. Proyek ini bertujuan untuk membangun model prediktif menggunakan LSTM untuk memprediksi harga penutupan saham **GOTO** berdasarkan data historis dari investing.com, dengan memanfaatkan kemampuan LSTM untuk menangkap pola temporal, proyek ini diharapkan dapat memberikan wawasan prediktif yang mendukung investor dalam membuat keputusan yang lebih tepat waktu dan *informed*, baik untuk strategi jangka pendek maupun menengah.
 
 ## Business Understanding
 ### Problem Statements
 Berdasarkan latar belakang di atas, permasalahan yang akan dibahas dalam proyek ini adalah:
-1. Seberapa akurat model LSTM dalam memprediksi harga penutupan saham **GOTO.JK** untuk 1 hari dan 5 hari ke depan berdasarkan data historis?
+1. Seberapa akurat model LSTM dalam memprediksi harga penutupan saham **GOTO** untuk 1 hari dan 5 hari ke depan berdasarkan data historis?
 2. Bagaimana performa model LSTM dibandingkan dengan metrik evaluasi seperti **Root Mean Squared Error (RMSE)** dan **Mean Absolute Error (MAE)**?
 3. Apakah model LSTM dapat digunakan untuk mendukung keputusan investasi jangka pendek atau menengah?
 
 ### Goals
 Berdasarkan *problem statements*, tujuan proyek ini adalah:
-1. Membangun model LSTM yang akurat untuk memprediksi harga penutupan saham **GOTO.JK**.
+1. Membangun model LSTM yang akurat untuk memprediksi harga penutupan saham **GOTO**.
 2. Mengevaluasi performa model menggunakan metrik **RMSE** dan **MAE**.
 3. Menyediakan wawasan prediktif yang dapat mendukung keputusan investasi.
 
 ### Solution Statement
-1. Melakukan **Exploratory Data Analysis (EDA)** untuk mengidentifikasi pola, tren, dan korelasi dalam data harga saham **GOTO.JK**.
+1. Melakukan **Exploratory Data Analysis (EDA)** untuk mengidentifikasi pola, tren, dan korelasi dalam data harga saham **GOTO**.
 2. Menggunakan model **LSTM** untuk memprediksi harga penutupan saham berdasarkan data historis.
 3. Menggunakan metrik evaluasi seperti **RMSE** dan **MAE** untuk menilai performa model.
 4. Melakukan normalisasi data menggunakan **StandardScaler** untuk memastikan data sesuai dengan kebutuhan model LSTM.
@@ -26,7 +26,7 @@ Berdasarkan *problem statements*, tujuan proyek ini adalah:
 
 ## Data Understanding
 ### Deskripsi Dataset
-Dataset yang digunakan diambil dari [Yahoo Finance](https://finance.yahoo.com/quote/GOTO.JK/history/) menggunakan library `yfinance` dengan kode saham **GOTO.JK**. Dataset ini mencakup periode perdagangan harian dari **11 April 2022 hingga 25 Mei 2025**, terdiri dari **1124 baris** dan **7 kolom**: **Tanggal**, **Terakhir**, **Pembukaan**, **Tertinggi**, **Terendah**, **Volume**, dan **Perubahan%**. Dataset ini bersifat deret waktu dan berisi data numerik tanpa nilai kategorikal.
+Dataset yang digunakan diambil dari [investing.com](https://id.investing.com/equities/goto-gojek-tokopedia-pt-historical-data). Dataset ini mencakup periode perdagangan harian dari **02 Desember 2020 hingga 23 Mei 2025**, terdiri dari **1124 baris** dan **7 kolom**: **Tanggal**, **Terakhir**, **Pembukaan**, **Tertinggi**, **Terendah**, **Volume**, dan **Perubahan%**. Dataset ini bersifat deret waktu dan berisi data numerik tanpa nilai kategorikal.
 
 ### Tipe Data
 ![image](https://github.com/user-attachments/assets/f863ea1b-11ca-4c36-b100-304ea941de88)
@@ -44,7 +44,7 @@ Dataset yang digunakan diambil dari [Yahoo Finance](https://finance.yahoo.com/qu
 ![image](https://github.com/user-attachments/assets/da72f837-2a95-498d-a5e9-8cb5ee899d04)
 - **Jumlah Baris**: 1124
 - **Jumlah Kolom**: 7
-- **Periode**: 11 April 2022 – 25 Mei 2025
+- **Periode**: 02 Desember 2020 – 23 Mei 2025
 
 ### Deskripsi Variabel
 ![image](https://github.com/user-attachments/assets/4a133e11-bc9b-4c89-ad32-16dd3e04a812)
