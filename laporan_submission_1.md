@@ -250,6 +250,7 @@ Evaluasi menggunakan metrik RMSE dan MAE
 **MAE** adalah rata-rata dari nilai absolut selisih antara nilai prediksi dan nilai aktual. Metrik ini mengukur rata-rata kesalahan prediksi tanpa mempertimbangkan arah kesalahan (positif atau negatif).
 
 **Rumus:**
+
 ![image](https://github.com/user-attachments/assets/a1c956e6-4c8b-47b9-859a-bd7dd8f6240f)
 
 
