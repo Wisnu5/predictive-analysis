@@ -247,21 +247,11 @@ Saran Perbaikan
 Evaluasi menggunakan metrik RMSE dan MAE
 **RMSE** adalah akar kuadrat dari rata-rata kuadrat selisih antara nilai prediksi dan nilai aktual. Metrik ini mengukur seberapa besar rata-rata kesalahan kuadrat prediksi model, memberikan gambaran tentang seberapa jauh prediksi menyimpang dari data sebenarnya. 
 
-**Rumus:**
-\[
-\text{RMSE} = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}
-\]
-- \( y_i \): Nilai aktual
-- \( \hat{y}_i \): Nilai prediksi
-- \( n \): Jumlah data
-
-## MAE (Mean Absolute Error)
 **MAE** adalah rata-rata dari nilai absolut selisih antara nilai prediksi dan nilai aktual. Metrik ini mengukur rata-rata kesalahan prediksi tanpa mempertimbangkan arah kesalahan (positif atau negatif).
 
 **Rumus:**
-\[
-\text{MAE} = \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y}_i|
-\]
+![image](https://github.com/user-attachments/assets/a1c956e6-4c8b-47b9-859a-bd7dd8f6240f)
+
 
 ## Perbedaan
 - **RMSE** lebih sensitif terhadap kesalahan besar karena menggunakan kuadrat.
