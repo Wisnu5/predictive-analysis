@@ -1,4 +1,6 @@
-# Laporan Proyek Machine Learning Terapan 1 - Wisnu Al Hussaeni
+# Laporan Proyek Machine Learning Terapan 1 -Prediksi Harga Saham Berbasis Menggunakan LSTM
+
+Wisnu Al Hussaeni - MC001D5Y1239
 
 ## Domain Proyek
 Harga saham merupakan indikator penting dalam pasar keuangan yang mencerminkan performa perusahaan dan dinamika pasar. PT GoTo Gojek Tokopedia (GOTO), sebuah perusahaan teknologi terkemuka di Indonesia. Data historis saham GOTO dapat diakses melalui [investing.com](https://id.investing.com/equities/goto-gojek-tokopedia-pt-historical-data). Prediksi harga saham yang akurat sangat penting bagi investor, trader, dan institusi keuangan untuk mendukung pengambilan keputusan investasi, manajemen risiko, dan strategi perdagangan. Pendekatan tradisional seperti analisis teknikal dan fundamental sering kali tidak mampu menangkap pola kompleks dan non-linear dalam data harga saham, yang dipengaruhi oleh faktor seperti sentimen pasar, kebijakan ekonomi, dan peristiwa global. Oleh karena itu, pendekatan berbasis *machine learning*, khususnya **Long Short-Term Memory (LSTM)**, menjadi relevan karena kemampuannya dalam menangani data deret waktu dengan ketergantungan jangka panjang. Proyek ini bertujuan untuk membangun model prediktif menggunakan LSTM untuk memprediksi harga penutupan saham **GOTO** berdasarkan data historis dari investing.com, dengan memanfaatkan kemampuan LSTM untuk menangkap pola temporal, proyek ini diharapkan dapat memberikan wawasan prediktif yang mendukung investor dalam membuat keputusan yang lebih tepat waktu dan *informed*, baik untuk strategi jangka pendek maupun menengah.
@@ -159,6 +161,29 @@ Beberapa tahapan persiapan data dilakukan agar data dapat digunakan dalam model 
    ![image](https://github.com/user-attachments/assets/ee3d9bdd-5a3b-41cf-bea2-384eea290b0a)
 
    - **80% data latih**, **20% data uji**.
+  
+ 8. **Membuat urutan input-output (30 hari untuk memprediksi 5 hari berikutnya)**
+    - create_sequences: Fungsi untuk membuat urutan data input (X) dan output (y)
+    - seq_length: panjang urutan input (berapa hari data sebelumnya yang digunakan)
+    - pred_length: panjang urutan prediksi (berapa hari ke depan yang akan diprediksi)
+    - **Strategi**:
+        - Input: 30 hari terakhir (`seq_length = 30`)
+        - Output: 5 hari ke depan (`pred_length = 5`)
+    - **Arsitektur**:
+        - LSTM (100 units)
+        - Dropout (0.2)
+        - LSTM (100 units)
+        - Dropout (0.2)
+        - Dense (50 units)
+        - Dense (5 units) → Output
+    - **Parameter**:
+        - Optimizer: `Adam`
+        - Loss Function: `MSE`
+        - Epoch: 50
+        - Batch Size: 32
+    - **Callback**:
+        - `EarlyStopping(patience=10, restore_best_weights=True)`
+        - `ReduceLROnPlateau(factor=0.5, patience=5, min_lr=0.0001)`
 ---
 
 ## 4. Modeling
@@ -171,8 +196,8 @@ Dengan memanfaatkan cell state dan gating mechanism ini, LSTM dapat mempelajari 
 ---
 
 ### Model LSTM 
-![image](https://github.com/user-attachments/assets/6200def0-bc7a-4774-8712-f9b006a4a98e)
-![image](https://github.com/user-attachments/assets/bbf1ace0-f1ec-476d-b53f-975a66309b99)
+![image](https://github.com/user-attachments/assets/ef5c01cc-9600-41b7-a140-88d233d9f528)
+![image](https://github.com/user-attachments/assets/6c6d62ff-3e83-489a-b8cd-63e02f48c0db)
 
 - **Arsitektur**:
   - LSTM (50 units)
@@ -190,51 +215,24 @@ Dengan memanfaatkan cell state dan gating mechanism ini, LSTM dapat mempelajari 
 
 - **Callback**:
   - `EarlyStopping(patience=10, restore_best_weights=True)`
-  - `ReduceLROnPlateau(factor=0.2, patience=5, min_lr=1e-5)`
+  - `ReduceLROnPlateau(factor=0.5, patience=5, min_lr=0.0001)`
 ---
-![image](https://github.com/user-attachments/assets/6bbf2d1f-df0d-4f5f-b496-b397efa84f71)
+
+![image](https://github.com/user-attachments/assets/2758ce62-232d-42ae-a5bd-da74566769b9)
 Setelah dilatih, model membuat prediksi pada data uji, lalu hasilnya dikembalikan ke skala asli menggunakan scaler.inverse_transform.
 Hasil evaluasi:
-- RMSE (Root Mean Squared Error): 151.20 → rata-rata error prediksi sekitar 151 unit dalam skala harga asli.
-- MAE (Mean Absolute Error): 98.02 → rata-rata selisih absolut antara harga asli dan prediksi adalah 98 unit.
+- RMSE (Root Mean Squared Error): 150.18 → rata-rata error prediksi sekitar 150 unit dalam skala harga asli.
+- MAE (Mean Absolute Error): 95.20 → rata-rata selisih absolut antara harga asli dan prediksi adalah 95 unit.
 
 Grafik menunjukkan perbandingan harga saham asli (biru) dan prediksi (jingga) dari Juli 2024 hingga Juni 2025:
 - Prediksi mengikuti tren harga asli dengan cukup baik.
 - Secara keseluruhan, prediksi cukup dekat dengan harga asli, sesuai dengan nilai RMSE dan MAE.
 ---
 
-### Membuat urutan input-output (30 hari untuk memprediksi 5 hari berikutnya)
-- create_sequences: Fungsi untuk membuat urutan data input (X) dan output (y)
-- seq_length: panjang urutan input (berapa hari data sebelumnya yang digunakan)
-- pred_length: panjang urutan prediksi (berapa hari ke depan yang akan diprediksi)
-
 ### 4.2 Model LSTM (Prediksi 5 Hari)
 ![image](https://github.com/user-attachments/assets/cdacfbe9-3bab-4572-bc8e-393c33cac0ea)
 ![image](https://github.com/user-attachments/assets/aceef4ef-37b9-4399-b1b5-2f6653ef3a46)
 ![image](https://github.com/user-attachments/assets/e03b43c0-49db-47a1-9514-1ce6f06055cc)
-
-- **Strategi**:
-  - Input: 30 hari terakhir (`seq_length = 30`)
-  - Output: 5 hari ke depan (`pred_length = 5`)
-
-- **Arsitektur**:
-  - LSTM (100 units)
-  - Dropout (0.2)
-  - LSTM (100 units)
-  - Dropout (0.2)
-  - Dense (50 units)
-  - Dense (5 units) → Output
-
-- **Parameter**:
-  - Optimizer: `Adam`
-  - Loss Function: `MSE`
-  - Epoch: 50
-  - Batch Size: 32
-
-- **Callback**:
-  - `EarlyStopping(patience=10, restore_best_weights=True)`
-  - `ReduceLROnPlateau(factor=0.2, patience=5, min_lr=1e-5)`
----
 
 model cukup baik mengikuti tren tetapi terlambat merespons lonjakan tajam, terutama saat harga naik tajam (des 2024) dan drop mendadak (apr 2025).
 Kemungkinan penyebab eror
@@ -244,6 +242,31 @@ Saran Perbaikan
 - Tambahkan fitur jangan menggunakan satu fitur saja
 - Kombinasikan prediksi dari beberapa model: misalnya kombinasi ARIMA + LSTM atau XGBoost + LSTM.
 
+## Evaluation
+Evaluasi menggunakan metrik RMSE dan MAE
+**RMSE** adalah akar kuadrat dari rata-rata kuadrat selisih antara nilai prediksi dan nilai aktual. Metrik ini mengukur seberapa besar rata-rata kesalahan kuadrat prediksi model, memberikan gambaran tentang seberapa jauh prediksi menyimpang dari data sebenarnya. 
+
+**Rumus:**
+\[
+\text{RMSE} = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}
+\]
+- \( y_i \): Nilai aktual
+- \( \hat{y}_i \): Nilai prediksi
+- \( n \): Jumlah data
+
+## MAE (Mean Absolute Error)
+**MAE** adalah rata-rata dari nilai absolut selisih antara nilai prediksi dan nilai aktual. Metrik ini mengukur rata-rata kesalahan prediksi tanpa mempertimbangkan arah kesalahan (positif atau negatif).
+
+**Rumus:**
+\[
+\text{MAE} = \frac{1}{n} \sum_{i=1}^{n} |y_i - \hat{y}_i|
+\]
+
+## Perbedaan
+- **RMSE** lebih sensitif terhadap kesalahan besar karena menggunakan kuadrat.
+- **MAE** lebih sederhana dan intuitif, cocok untuk memahami kesalahan rata-rata.
+Keduanya digunakan untuk mengevaluasi performa model prediksi.
+
 ## Kesimpulan Proyek Prediksi Harga Saham GOTO
 
 1. Menjawab Problem Statement
@@ -252,8 +275,8 @@ Saran Perbaikan
 - Namun, performa model masih dapat ditingkatkan, terutama dalam menangkap perubahan harga yang tajam (lonjakan dan penurunan ekstrem), yang terlihat dari peningkatan error saat horizon prediksi lebih jauh.
 
 2. Hasil evaluasi menggunakan metrik:
-- RMSE: 300.17
-- MAE: 219.97
+- RMSE: 365.25
+- MAE: 269.88
 - Ini menunjukkan bahwa model memiliki kemampuan dasar dalam memprediksi arah harga, namun masih terdapat deviasi yang cukup besar dari nilai aktual, terutama untuk horizon lebih panjang.
 - Jika dibandingkan dengan baseline seperti naive forecast (misalnya: harga hari ini = harga kemarin), model LSTM menunjukkan peningkatan akurasi, khususnya dalam mengenali pola jangka pendek.
 
