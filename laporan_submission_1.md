@@ -230,9 +230,10 @@ Grafik menunjukkan perbandingan harga saham asli (biru) dan prediksi (jingga) da
 ---
 
 ### 4.2 Model LSTM (Prediksi 5 Hari)
-![image](https://github.com/user-attachments/assets/cdacfbe9-3bab-4572-bc8e-393c33cac0ea)
-![image](https://github.com/user-attachments/assets/aceef4ef-37b9-4399-b1b5-2f6653ef3a46)
-![image](https://github.com/user-attachments/assets/e03b43c0-49db-47a1-9514-1ce6f06055cc)
+![image](https://github.com/user-attachments/assets/e5627556-3087-4722-b02c-1e8173a24af9)
+![image](https://github.com/user-attachments/assets/3a641692-baba-4ea6-beaa-20db3cc56803)
+![image](https://github.com/user-attachments/assets/20c2c083-715c-4241-b025-9084f0aa10f3)
+
 
 model cukup baik mengikuti tren tetapi terlambat merespons lonjakan tajam, terutama saat harga naik tajam (des 2024) dan drop mendadak (apr 2025).
 Kemungkinan penyebab eror
